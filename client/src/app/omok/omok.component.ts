@@ -154,7 +154,7 @@ export class OmokComponent implements OnInit {
 
 resultData()
 {
-  return this.http.get("./resultdata/")
+  return this.http.get("./resultdata/"+ this.c2.session +"/")
 }
 
 getAllData()

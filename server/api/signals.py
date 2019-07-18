@@ -1,8 +1,18 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from .models import *
 from .serializers import *
 import requests, time, random
+
+'''
+@receiver(pre_save, sender = Stone)
+def stone_pre_save(sender, instance, **kwargs):
+    if Stone.objects.filter(x1=instance.x1) and Stone.objects.filter(y1=instance.y1):
+        raise Exception('Duplication!')
+
+    if Stone.objects.filter(x2=instance.x2) and Stone.objects.filter(y2=instance.y2):
+        raise Exception('Duplication!')
+'''
 
 @receiver(post_save, sender = Stone)
 def stone_post_save(sender, **kwargs):
@@ -37,6 +47,6 @@ def stone_post_save(sender, **kwargs):
               y2 = random.randrange(1,20)
 
               data = {'room':resultRoom, 'color': mColor , 'x1': x1, 'y1': y1, 'x2': x2, 'y2' : y2}
-              requests.post('http://turnincode.cafe24.com:9999/home/sessions/'+str(resultRoom)+'/stones/', data=data)
+              requests.post('http://turnincode.cafe24.com:8880/home/sessions/'+str(resultRoom)+'/stones/', data=data)
 
 

@@ -410,7 +410,7 @@ var OmokComponent = /** @class */ (function () {
         }
     };
     OmokComponent.prototype.resultData = function () {
-        return this.http.get("./resultdata/");
+        return this.http.get("./resultdata/" + this.c2.session + "/");
     };
     OmokComponent.prototype.getAllData = function () {
         return this.http
@@ -504,7 +504,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/bodago/Connect6/client/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /home/cykim/Connect6/client/src/main.ts */"./src/main.ts");
 
 
 /***/ })

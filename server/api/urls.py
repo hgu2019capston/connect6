@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     url(r'^index/', views.index),
-    url(r'^resultdata/$', views.ResultData),
+    url(r'^resultdata/(?P<pk>[0-9]+)/$', views.ResultData),
     url(r'^getsession/$', views.getSession),
 ]
 

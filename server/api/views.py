@@ -39,7 +39,6 @@ def index(request):
     
     session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
 
-    
     if session_key is None:
         request.session.set_test_cookie()
         return render(request, 'index.html', {'session_key':"No Session ID, refresh page!"})
@@ -56,7 +55,7 @@ def index(request):
             x = random.choice('ABCDEFGHIJKLMNOPQRS')
             y = random.randrange(1,20)
             data = {'room': s.id, 'color': "black" , 'x1': x, 'y1': y, 'x2': '', 'y2': 0}
-            requests.post('http://turnincode.cafe24.com:9999/home/sessions/'+str(s.id)+'/stones/', data=data)
+            requests.post('http://turnincode.cafe24.com:8880/home/sessions/'+str(s.id)+'/stones/', data=data)
 
     return render(request, 'index.html', {'session_key':s.id, "color":s.color})
 
@@ -74,22 +73,15 @@ class StoneViewSet(NestedViewSetMixin, ModelViewSet):
     serializer_class = StoneSerializer
     queryset = Stone.objects.all()
 
-
-
-
-def ResultData(request):
-    session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
-    s = Session.objects.get(session_name=session_key)
-    print("which session")
-    print(s.id)
-    tmp = ResultOmok.objects.filter(room=s.id)
+def ResultData(request, pk):
+    
+    tmp = ResultOmok.objects.filter(room=pk)
     black = tmp.filter(color="black")
     white = tmp.filter(color="white")
 
     bCount = black.count()
     wCount = white.count()
-
-
+    
     row = list(ascii_uppercase)
 
     for i in row:
@@ -101,8 +93,6 @@ def ResultData(request):
                         cnt+=1
                 if cnt == 6:
                     result = str('Black WIN !!! ')
-                    print(result)
-                    print(s.id)
                     return JsonResponse(result , safe = False)
                 else:
                     cnt =0
@@ -113,11 +103,10 @@ def ResultData(request):
                         cnt+=1
                 if cnt == 6:
                     result = str('White WIN !!! ')
-                    print(result)
-                    print(s.id)
                     return JsonResponse(result , safe = False)
                 else:
                    cnt=0
+
     for j in range(1,20):
         for i in row:
             if black.filter(x=i, y=j).count() == 1:
@@ -165,5 +154,30 @@ def ResultData(request):
                     return JsonResponse(result, safe=False)
                 else:
                     cnt = 0
+
+
+    for i in row:
+        for j in range(1,20):
+            if black.filter(x=i, y=j).count() == 1:
+                cnt = 1
+                for jj in range(1,6):
+                    if tmp.filter(color="black", x=chr(ord(i)+jj) , y = j-jj).count()==1:
+                        cnt+=1
+                if cnt == 6:
+                    result = str('Black WIN !!! ')
+                    return JsonResponse(result, safe=False)
+                else:
+                    cnt = 0
+            if white.filter(x=i, y=j).count() == 1:
+                cnt = 1
+                for jj in range(1,6):
+                    if tmp.filter(color="white", x=chr(ord(i)+jj) , y = j-jj).count()==1:
+                        cnt+=1
+                if cnt == 6:
+                    result = str('White WIN !!! ')
+                    return JsonResponse(result, safe=False)
+                else:
+                    cnt = 0
+
 
     return HttpResponse()

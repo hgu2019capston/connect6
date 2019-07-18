@@ -23,7 +23,7 @@ if sys.argv[2] == 'b':
   for i in number:
       time.sleep(1)
       if i == 9:
-        data = {'room': sys.argv[1], 'color': 'black', 'x1' : 'D', 'y1' : i , 'x2' : 'J', 'y2' : i}
+        data = {'room': sys.argv[1], 'color': 'black', 'x1' : 'D', 'y1' : i , 'x2' : 'D', 'y2' : i}
       else:
         data = {'room': sys.argv[1], 'color': 'black', 'x1' : 'D', 'y1' : i , 'x2' : 'D', 'y2' : i+1}
       res = requests.post('http://turnincode.cafe24.com:8880/home/sessions/'+sys.argv[1]+'/stones/', data=data)

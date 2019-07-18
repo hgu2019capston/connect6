@@ -20,6 +20,7 @@ from django.urls import reverse
 from rest_framework.viewsets import ModelViewSet
 
 from rest_framework_extensions.mixins import NestedViewSetMixin
+from rest_framework.decorators import api_view
 
 
 class JSONResponse(HttpResponse):
@@ -31,7 +32,7 @@ class JSONResponse(HttpResponse):
 
 def index(request):
     colorNum = random.randrange(1,3)
-    colorNum = 2
+    colorNum = 2 
     if colorNum == 1:
         color = "white"
     else :
@@ -68,10 +69,16 @@ class SessionViewSet(NestedViewSetMixin, ModelViewSet):
     serializer_class = SessionSerializer
     queryset = Session.objects.all()
  
- 
 class StoneViewSet(NestedViewSetMixin, ModelViewSet):
     serializer_class = StoneSerializer
     queryset = Stone.objects.all()
+
+@api_view(['GET'])
+def helloworld(request):
+    if request.method == 'GET':
+        print("HELLO")
+        return Response()
+
 
 def ResultData(request, pk):
     

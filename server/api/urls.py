@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^index/', views.index),
     url(r'^resultdata/(?P<pk>[0-9]+)/$', views.ResultData),
     url(r'^getsession/$', views.getSession),
+    url(r'^hello/$', views.helloworld),
 ]
 
 #urlpatterns = format_suffix_patterns(urlpatterns)

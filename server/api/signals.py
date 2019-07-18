@@ -4,15 +4,20 @@ from .models import *
 from .serializers import *
 import requests, time, random
 
-'''
+
 @receiver(pre_save, sender = Stone)
 def stone_pre_save(sender, instance, **kwargs):
-    if Stone.objects.filter(x1=instance.x1) and Stone.objects.filter(y1=instance.y1):
+    if Stone.objects.filter(room=instance.room, x1=instance.x1, y1=instance.y1).exists():
         raise Exception('Duplication!')
+    if Stone.objects.filter(room=instance.room, x2=instance.x1, y2=instance.y1).exists():
+        raise Exception('Duplication!')
+    if Stone.objects.filter(room=instance.room, x1=instance.x2, y1=instance.y2).exists():
+        raise Exception('Duplication!')
+    if Stone.objects.filter(room=instance.room, x2=instance.x2, y2=instance.y2).exists():
+        raise Exception('Duplication!')
+    if instance.x1 == instance.x2 and instance.y1 == instance.y2:
+        raise Exception('Duplication')
 
-    if Stone.objects.filter(x2=instance.x2) and Stone.objects.filter(y2=instance.y2):
-        raise Exception('Duplication!')
-'''
 
 @receiver(post_save, sender = Stone)
 def stone_post_save(sender, **kwargs):

@@ -12,3 +12,5 @@ class StoneSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Stone
 		fields = ('id', 'room', 'color', 'x1', 'y1', 'x2', 'y2')
+
+        

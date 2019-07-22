@@ -66,7 +66,6 @@ def game(request, session_key):
 
 def index(request):
     colorNum = random.randrange(1,3)
-    colorNum = 2
     if colorNum == 1:
         color = "white"
     else :
@@ -90,7 +89,7 @@ def index(request):
             x = random.choice('ABCDEFGHIJKLMNOPQRS')
             y = random.randrange(1,20)
             data = {'room': s.id, 'color': "black" , 'x1': x, 'y1': y, 'x2': '', 'y2': 0}
-            requests.post('http://turnincode.cafe24.com:9999/api/sessions/'+str(s.id)+'/stones/', data=data)
+            requests.post('http://turnincode.cafe24.com:8880/api/sessions/'+str(s.id)+'/stones/', data=data)
 
     return render(request, 'index.html', {'session_key':s.id, "color":s.color})
 
@@ -133,8 +132,6 @@ def ResultData(request, sessionid):
                         cnt+=1
                 if cnt == 6:
                     result = str('Black WIN !!! ')
-                    print(result)
-                    print(s.id)
                     return JsonResponse(result , safe = False)
                 else:
                     cnt =0
@@ -145,8 +142,6 @@ def ResultData(request, sessionid):
                         cnt+=1
                 if cnt == 6:
                     result = str('White WIN !!! ')
-                    print(result)
-                    print(s.id)
                     return JsonResponse(result , safe = False)
                 else:
                    cnt=0
@@ -198,4 +193,30 @@ def ResultData(request, sessionid):
                 else:
                     cnt = 0
 
+  
+
+    for i in row:
+        for j in range(1,20):
+            if black.filter(x=i, y=j).count() == 1:
+                cnt = 1
+                for jj in range(1,6):
+                    if tmp.filter(color="black", x=chr(ord(i)+jj) , y = j-jj).count()==1:
+                        cnt+=1
+                if cnt == 6:
+                    result = str('Black WIN !!! ')
+                    return JsonResponse(result, safe=False)
+                else:
+                    cnt = 0
+            if white.filter(x=i, y=j).count() == 1:
+                cnt = 1
+                for jj in range(1,6):
+                    if tmp.filter(color="white", x=chr(ord(i)+jj) , y = j-jj).count()==1:
+                        cnt+=1
+                if cnt == 6:
+                    result = str('White WIN !!! ')
+                    return JsonResponse(result, safe=False)
+                else:
+                    cnt = 0
+
     return HttpResponse()
+

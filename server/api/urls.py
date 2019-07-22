@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^home/', views.home, name='home'),
     url('', include('django.contrib.auth.urls')),
     url(r'^index/', views.index, name='index'),
+    url(r'^watch/', views.watchGame, name='watch'),
     url(r'^resultdata/(?P<sessionid>[0-9]+)/$', views.ResultData),
     url(r'^getsession/$', views.getSession),
     url(r'^manager/', views.managePage, name='managePage'),

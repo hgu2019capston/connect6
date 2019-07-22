@@ -52,11 +52,22 @@ def room(request, room_name):
         else:
             s = Session(session_name = str(room_name))
             s.save()
-
+            uid = request.user.id
+            user = User.objects.get(id=uid)
+            r = Room(room_name=str(room_name), manager_id=str(user))
+            r.save()
+            
         return HttpResponseRedirect(reverse(game, kwargs={'session_key':s.id}))
     
     else:
         return redirect('home')
+
+def watchGame(request):
+    gamelists = Room.objects.all()
+    try:
+        return render(request, 'watch.html', {'gamelists': gamelists})
+    except:
+        return render(request, 'watch.html', {'error': 'There is nothing in progress.'})
 
 def game(request, session_key):
     if Session.objects.filter(id=session_key).exists():

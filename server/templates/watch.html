@@ -1,9 +1,13 @@
-<h2> Game list in progress </h2>
+{% include 'material/includes/material_css.html' %}
+{% include 'material/includes/material_js.html' %}
+
+<a href="{% url 'home'%}">Home</a>
+
+<p><font size="5"> Game list in progress </font></p>
 
 {% for game in gamelists %}
- <button onclick="window.location.href = '/game/{{game.room_name}}';">{{ game.room_name }}</button>
+<div><p><button onclick="window.location.href = '/game/{{game.room_name}}';">{{ game.room_name }}</button></p></div>
 {% endfor %}
-
 
 <p>{{ error }}</p>
 

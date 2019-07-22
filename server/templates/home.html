@@ -1,0 +1,31 @@
+{% include 'material/includes/material_css.html' %}
+{% include 'material/includes/material_js.html' %}
+
+{% load i18n static %}
+{% load material_form %}
+
+<style>
+  #tab {
+    margin:50;
+  }
+  #title {
+    position: relative;
+  }
+  #right {
+    position: relative;
+  }
+</style>
+
+<ul id="right">
+<p><li><a href="{% url 'login'%}"> login as manager</a></li></p></ul>
+
+<div id="title">
+   <p><center><h2>{% block page_title %}HGU Connect6 Home{% endblock %}</h2></center></p>
+</div>
+
+<div id="tab">
+  </form>
+    <p><center><button type="submit" class="btn" onclick="location.href='{% url 'index' %}'"/>Exercise</center></p>
+    <p><center><button type="submit" class="btn" onclick="location.href='{% url 'login' %}'"/>Watch a game in progress</center></p>
+  </form>
+</div>

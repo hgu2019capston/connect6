@@ -1,0 +1,31 @@
+
+{% load static %} <!doctype html>
+
+{% block sidebar %}
+  <li><a href="{% url 'logout' %}">  Logout</a></li>
+  <li><a href="{% url 'home' %}"> Home</a></li>
+{% endblock %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Battle</title>
+<p font size="5"> Manager : {{ manager_name}}</p>
+<p> Manager session key: {{ manager_id }}</p>
+<p> APIs : GET /home/sessions/{{manager_id}}/stones </p>
+<p> POST /home/battle/{{manager_id}}/stones { "room": your manager id, "color": your color, "x1": A-S, "y1":1-19, "x2":A-S, "y2":1-19 } </p></font>
+
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  </head>
+  <body>
+    <app-root></app-root>
+    <script type="text/javascript" src="{% static 'runtime.js' %}"></script>
+    <script type="text/javascript" src="{% static 'polyfills.js' %}"></script>
+    <script type="text/javascript" src="{% static 'styles.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main.js' %}"></script>
+  </body>
+</html>
+

@@ -19,6 +19,10 @@ CLIENT_DIR = os.path.join(os.path.join(BASE_DIR, '..'), 'client')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/battle/'
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '53bac8@-0kd&&2^ne^v$lbmkrh(#8e7u4^wz*hc4o(w0w7&p7&'
 
@@ -39,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api.apps.ApiConfig',
+    'material',
 ]
 
 MIDDLEWARE = [

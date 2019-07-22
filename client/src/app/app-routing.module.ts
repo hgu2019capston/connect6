@@ -4,6 +4,7 @@ import { OmokComponent } from './omok/omok.component';
 
 const routes: Routes = [
   { path: 'index', component: OmokComponent },
+  { path: 'battle', component: OmokComponent},
 ];
 
 @NgModule({

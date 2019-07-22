@@ -15,6 +15,8 @@ from rest_framework import status
 
 import random, requests, time
 from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib import messages
 from string import ascii_uppercase
 from django.urls import reverse
 from rest_framework.viewsets import ModelViewSet
@@ -22,6 +24,9 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
 from rest_framework.decorators import api_view
 
+
+def home(request):
+    return render(request, 'home.html')
 
 class JSONResponse(HttpResponse):
     def __init__(self, data, **kwargs):
@@ -59,6 +64,30 @@ def index(request):
             requests.post('http://turnincode.cafe24.com:8880/home/sessions/'+str(s.id)+'/stones/', data=data)
 
     return render(request, 'index.html', {'session_key':s.id, "color":s.color})
+
+def BattlePage(request):
+
+    if request.user.is_authenticated:
+        uid = request.user.id
+        user = User.objects.get(id=uid)
+
+        session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+        if session_key is None:
+            request.session.set_test_cookie()
+            return render(request, 'battle.html', {'manager_id': "No session ID, refresh page!"})
+
+        elif UserSession.objects.filter(user_id=session_key).exists():
+            u = UserSession.objects.get(user_id=session_key)
+
+        else:
+            u = UserSession(user_id = session_key, user_name= str(user))
+            u.save()
+
+    else:
+        messages.add_message(request, messages.INFO, 'please login as manager.')
+        return redirect('home')
+
+    return render(request, 'battle.html', {'manager_id':session_key, 'manager_name':str(user)})
 
 def getSession(request):
     session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)

@@ -28,5 +28,9 @@ class ResultOmok(models.Model):
 	def __str__(self):
 		return self.color
 
+class UserSession(models.Model):
+    user_id = models.CharField(default="",max_length=200,primary_key=True)
+    user_name = models.CharField(default="",max_length=50)
+
 
 # Create your models here.

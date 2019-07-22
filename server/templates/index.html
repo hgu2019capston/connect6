@@ -1,20 +1,24 @@
-{% load static %}<!doctype html>
-<h1> Which Color : {{ color }} </h1>
-<h1> Which Session : {{ session_key }} </h1>
-<h2> APIs : GET /home/sessions/{{session_key}}/stones </h2>
-<h2> POST /home/sessions/{{session_key}}/stones { "room": your session, "color": your color, "x1": A-S, "y1":1-19, "x2":A-S, "y2":1-19 } </h2>
-<html 
-lang="en">
+<!doctype html>
+{% include 'material/includes/material_css.html' %}
+{% include 'material/includes/material_js.html' %}
+
+{% block sidebar %}
+  <li><a href="{% url 'home' %}"> Home</a></li>
+{% endblock %}
+
+<p font size="5"> Which Color : {{ color }} </font></p>
+<p font size="5"> Which Session : {{ session_key }} <font></p>
+<p font size="5"> APIs : GET /home/sessions/{{session_key}}/stones </font></p>
+<p font size="5"> POST /home/sessions/{{session_key}}/stones { "room": your session, "color": your color, "x1": A-S, "y1":1-19, "x2":A-S, "y2":1-19 } </font></p>
+
+{% load static %}
+<html lang="en">
   <head>
-    <meta 
-charset="utf-8">
+    <meta charset="utf-8">
     <title>Client</title>
-    <base 
-href="/">
-    <meta 
-name="viewport" content="width=device-width, initial-scale=1">
-    <link 
-rel="icon" type="image/x-icon" href="favicon.ico">
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
   </head>
   <body>
     <app-root></app-root>
@@ -26,7 +30,6 @@ rel="icon" type="image/x-icon" href="favicon.ico">
 {% static 'styles.js' %}"></script>
     <script type="text/javascript" src="
 {% static 'vendor.js' %}"></script>
-    <script type="text/javascript" src="
-{% static 'main.js' %}"></script>
   </body>
 </html>
+

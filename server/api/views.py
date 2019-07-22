@@ -21,6 +21,21 @@ from rest_framework.viewsets import ModelViewSet
 
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
+from django.shortcuts import redirect
+from django.contrib.auth.models import User
+
+def home(request):
+        return render(request, 'home.html')
+
+def managePage(request):
+        if request.user.is_authenticated:
+                uid = request.user.id
+                user = User.objects.get(id=uid)
+
+                return render(request, 'manage.html', {'user':user})
+
+        else:
+                return redirect('home')
 
 class JSONResponse(HttpResponse):
     def __init__(self, data, **kwargs):
@@ -28,6 +43,22 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
+def room(request, room_name):
+    colorNum = random.randrange(1,3)
+    colorNum = 2
+    if colorNum == 1:
+        color = "white"
+    else :
+        color = "black"
+
+    if Session.objects.filter(session_name=room_name).exists():
+        s = Session.objects.get(session_name=room_name)
+
+    else:
+        s = Session(session_name = str(room_name), color=color)
+        s.save()
+
+    return render(request, 'room.html', {'session_key':s.id, "color":s.color})
 
 def index(request):
     colorNum = random.randrange(1,3)
@@ -38,7 +69,6 @@ def index(request):
         color = "black"
     
     session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
-
     
     if session_key is None:
         request.session.set_test_cookie()
@@ -46,7 +76,7 @@ def index(request):
 
     elif Session.objects.filter(session_name=session_key).exists():
         s = Session.objects.get(session_name=session_key)
-#        return render(request, 'index.html', {'session_key':s.id, "color":color})
+        return render(request, 'index.html', {'session_key':s.id, "color":color})
     
     else: 
         s = Session(session_name = str(session_key), color=color)
@@ -59,6 +89,7 @@ def index(request):
             requests.post('http://turnincode.cafe24.com:9999/home/sessions/'+str(s.id)+'/stones/', data=data)
 
     return render(request, 'index.html', {'session_key':s.id, "color":s.color})
+
 
 def getSession(request):
     session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
@@ -77,7 +108,7 @@ class StoneViewSet(NestedViewSetMixin, ModelViewSet):
 
 
 
-def ResultData(request):
+def ResultData(self, request, sessionid):
     session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
     s = Session.objects.get(session_name=session_key)
     print("which session")

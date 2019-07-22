@@ -1,13 +1,17 @@
 from django.conf.urls import url
-from django.urls import path
+from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 
 urlpatterns = [
-    url(r'^index/', views.index),
-    url(r'^resultdata/$', views.ResultData),
+    url(r'^home/', views.home, name='home'),
+    url('', include('django.contrib.auth.urls')),
+    url(r'^index/', views.index, name='index'),
+    url(r'^resultdata/(?P<sessionid>[0-9]+)/$', views.ResultData),
     url(r'^getsession/$', views.getSession),
+    url(r'^manager/', views.managePage, name='managePage'),
+    url(r'^room/(?P<room_name>[^/]+)/', views.room, name='room'),
 ]
 
 #urlpatterns = format_suffix_patterns(urlpatterns)

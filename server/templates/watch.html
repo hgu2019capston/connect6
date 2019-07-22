@@ -1,8 +1,9 @@
 <h2> Game list in progress </h2>
 
 {% for game in gamelists %}
- <p><li>{{ game.room_name }}</li></p>
+ <button onclick="window.location.href = '/game/{{game.room_name}}';">{{ game.room_name }}</button>
 {% endfor %}
+
 
 <p>{{ error }}</p>
 

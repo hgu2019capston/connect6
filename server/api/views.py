@@ -24,6 +24,7 @@ from rest_framework_extensions.mixins import NestedViewSetMixin
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
+
 def home(request):
         return render(request, 'home.html')
 
@@ -44,21 +45,24 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 def room(request, room_name):
-    colorNum = random.randrange(1,3)
-    colorNum = 2
-    if colorNum == 1:
-        color = "white"
-    else :
-        color = "black"
+    if request.user.is_authenticated:
+        if Session.objects.filter(session_name=room_name).exists():
+            s = Session.objects.get(session_name=room_name)
 
-    if Session.objects.filter(session_name=room_name).exists():
-        s = Session.objects.get(session_name=room_name)
+        else:
+            s = Session(session_name = str(room_name))
+            s.save()
 
+        return HttpResponseRedirect(reverse(game, kwargs={'session_key':s.id}))
+    
     else:
-        s = Session(session_name = str(room_name), color=color)
-        s.save()
+        return redirect('home')
 
-    return render(request, 'room.html', {'session_key':s.id, "color":s.color})
+def game(request, session_key):
+    if Session.objects.filter(id=session_key).exists():
+        return render(request, 'room.html', {'session_key':session_key})    
+    else:
+        return redirect('home')
 
 def index(request):
     colorNum = random.randrange(1,3)
@@ -86,7 +90,7 @@ def index(request):
             x = random.choice('ABCDEFGHIJKLMNOPQRS')
             y = random.randrange(1,20)
             data = {'room': s.id, 'color': "black" , 'x1': x, 'y1': y, 'x2': '', 'y2': 0}
-            requests.post('http://turnincode.cafe24.com:9999/home/sessions/'+str(s.id)+'/stones/', data=data)
+            requests.post('http://turnincode.cafe24.com:9999/api/sessions/'+str(s.id)+'/stones/', data=data)
 
     return render(request, 'index.html', {'session_key':s.id, "color":s.color})
 
@@ -96,10 +100,10 @@ def getSession(request):
     s = Session.objects.get(session_name=session_key)
     return JsonResponse(str(s.id), safe=False)
 
+
 class SessionViewSet(NestedViewSetMixin, ModelViewSet):
     serializer_class = SessionSerializer
     queryset = Session.objects.all()
- 
  
 class StoneViewSet(NestedViewSetMixin, ModelViewSet):
     serializer_class = StoneSerializer
@@ -108,12 +112,9 @@ class StoneViewSet(NestedViewSetMixin, ModelViewSet):
 
 
 
-def ResultData(self, request, sessionid):
-    session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
-    s = Session.objects.get(session_name=session_key)
-    print("which session")
-    print(s.id)
-    tmp = ResultOmok.objects.filter(room=s.id)
+def ResultData(request, sessionid):
+    
+    tmp = ResultOmok.objects.filter(room=sessionid)
     black = tmp.filter(color="black")
     white = tmp.filter(color="white")
 

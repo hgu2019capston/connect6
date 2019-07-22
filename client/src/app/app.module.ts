@@ -6,12 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OmokComponent } from './omok/omok.component';
 import { ManagerComponent } from './manager/manager.component';
+import { BattleComponent } from './battle/battle.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OmokComponent,
     ManagerComponent,
+    BattleComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^getsession/$', views.getSession),
     url(r'^manager/', views.managePage, name='managePage'),
     url(r'^room/(?P<room_name>[^/]+)/', views.room, name='room'),
+    url(r'^game/(?P<session_key>[^/]+)/$', views.game, name='game'),
 ]
 
 #urlpatterns = format_suffix_patterns(urlpatterns)

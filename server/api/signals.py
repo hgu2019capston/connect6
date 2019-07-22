@@ -37,20 +37,21 @@ def stone_post_save(sender, **kwargs):
 	
             clientColor = Session.objects.get(id=resultRoom).color
 
-            if(str(Stone.objects.last().color) == clientColor):
-              if(clientColor == "white"):
-                  mColor = "black"
-              else:
-                  mColor = "white"
+            if(clientColor is not None):
+            
+              if(str(Stone.objects.last().color) == clientColor):
+                if(clientColor == "white"):
+                    mColor = "black"
+                else:
+                    mColor = "white"
 
-              time.sleep(2)
-              x1 = random.choice('ABCDEFGHIJKLMNOPQRS')
-              x2 = random.choice('ABCDEFGHIJKLMNOPQRS')
+                time.sleep(2)
+                x1 = random.choice('ABCDEFGHIJKLMNOPQRS')
+                x2 = random.choice('ABCDEFGHIJKLMNOPQRS')
 
-              y1 = random.randrange(1,20)
-              y2 = random.randrange(1,20)
+                y1 = random.randrange(1,20)
+                y2 = random.randrange(1,20)
 
-              data = {'room':resultRoom, 'color': mColor , 'x1': x1, 'y1': y1, 'x2': x2, 'y2' : y2}
-              requests.post('http://turnincode.cafe24.com:9999/home/sessions/'+str(resultRoom)+'/stones/', data=data)
-
+                data = {'room':resultRoom, 'color': mColor , 'x1': x1, 'y1': y1, 'x2': x2, 'y2' : y2}
+                requests.post('http://turnincode.cafe24.com:9999/api/sessions/'+str(resultRoom)+'/stones/', data=data)
 

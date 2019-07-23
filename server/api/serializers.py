@@ -5,7 +5,7 @@ from .models import *
 class SessionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Session
-		fields = ('id','color', 'session_name')
+		fields = ('id','color', 'session_name', 'status')
 
 
 class StoneSerializer(serializers.ModelSerializer):

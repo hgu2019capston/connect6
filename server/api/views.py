@@ -66,7 +66,7 @@ def room(request, room_name):
         else:
             uid = request.user.id
             user = User.objects.get(id=uid)
-            s = Session(session_name = str(room_name), manager_id=str(user))
+            s = Session(session_name = str(room_name), manager_id=str(user), status=True)
             s.save()
 
 
@@ -100,7 +100,7 @@ def index(request):
         return render(request, 'index.html', {'session_key':s.id, "color":color})
     
     else: 
-        s = Session(session_name = str(session_key), color=color)
+        s = Session(session_name = str(session_key), color=color, status=True)
         s.save()
 
         if s.color == "white":
@@ -137,7 +137,9 @@ def ResultData(request, sessionid):
 
     bCount = black.count()
     wCount = white.count()
-
+    s=None
+    if Session.objects.filter(id=sessionid).exists():
+        s = Session.objects.get(id=sessionid)
 
     row = list(ascii_uppercase)
 
@@ -151,6 +153,9 @@ def ResultData(request, sessionid):
                 if cnt == 6:
                     result = str('Black WIN !!! ')
                     print(result)
+                    if s is not None:
+                        s.status=False
+                        s.save()
                     return JsonResponse(result , safe = False)
                 else:
                     cnt =0
@@ -162,6 +167,9 @@ def ResultData(request, sessionid):
                 if cnt == 6:
                     result = str('White WIN !!! ')
                     print(result)
+                    if s is not None:
+                        s.status=False
+                        s.save()
                     return JsonResponse(result , safe = False)
                 else:
                    cnt=0
@@ -174,7 +182,9 @@ def ResultData(request, sessionid):
                         cnt +=1
                 if cnt == 6:
                     result = str('Black WIN !!!! ')
-
+                    if s is not None:
+                        s.status=False
+                        s.save()
                     return JsonResponse(result, safe = False)
                 else:
                     cnt =0
@@ -185,6 +195,9 @@ def ResultData(request, sessionid):
                         cnt +=1
                 if cnt == 6:
                     result = str('White WIN !!!! ')
+                    if s is not None:
+                        s.status=False
+                        s.save()
                     return JsonResponse(result, safe = False)
                 else:
                     cnt =0
@@ -199,6 +212,9 @@ def ResultData(request, sessionid):
                         cnt+=1
                 if cnt == 6:
                     result = str('Black WIN !!! ')
+                    if s is not None:
+                        s.status=False
+                        s.save()
                     return JsonResponse(result, safe=False)
                 else:
                     cnt = 0
@@ -209,6 +225,9 @@ def ResultData(request, sessionid):
                         cnt+=1
                 if cnt == 6:
                     result = str('White WIN !!! ')
+                    if s is not None:
+                        s.status=False
+                        s.save()
                     return JsonResponse(result, safe=False)
                 else:
                     cnt = 0

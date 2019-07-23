@@ -24,6 +24,18 @@ from rest_framework_extensions.mixins import NestedViewSetMixin
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
+def manageSession(request, room_name):
+    return render(request, 'manageSession.html', {'room_name':room_name})
+
+def createSession(request):
+    return render(request, 'createSession.html')
+
+def watch(request):
+    gamelists = Session.objects.filter(color=None)
+    try:
+        return render(request, 'list.html', {'gamelists': gamelists})
+    except:
+        return render(request, 'list.html', {'error': 'There is nothing in progress.'})
 
 def home(request):
         return render(request, 'home.html')
@@ -32,8 +44,10 @@ def managePage(request):
         if request.user.is_authenticated:
                 uid = request.user.id
                 user = User.objects.get(id=uid)
+                mygamelists = Session.objects.filter(manager_id=user)
+                allgamelists = Session.objects.filter(color=None)
 
-                return render(request, 'manage.html', {'user':user})
+                return render(request, 'manage.html', {'user':user, 'mygamelists':mygamelists, 'allgamelists':allgamelists})
 
         else:
                 return redirect('home')
@@ -50,8 +64,11 @@ def room(request, room_name):
             s = Session.objects.get(session_name=room_name)
 
         else:
-            s = Session(session_name = str(room_name))
+            uid = request.user.id
+            user = User.objects.get(id=uid)
+            s = Session(session_name = str(room_name), manager_id=str(user))
             s.save()
+
 
         return HttpResponseRedirect(reverse(game, kwargs={'session_key':s.id}))
     
@@ -134,7 +151,6 @@ def ResultData(request, sessionid):
                 if cnt == 6:
                     result = str('Black WIN !!! ')
                     print(result)
-                    print(s.id)
                     return JsonResponse(result , safe = False)
                 else:
                     cnt =0
@@ -146,7 +162,6 @@ def ResultData(request, sessionid):
                 if cnt == 6:
                     result = str('White WIN !!! ')
                     print(result)
-                    print(s.id)
                     return JsonResponse(result , safe = False)
                 else:
                    cnt=0

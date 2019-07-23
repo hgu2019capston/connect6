@@ -4,6 +4,7 @@ from django.db import models
 class Session(models.Model):
 	session_name = models.CharField(max_length=200, unique=True)
 	color = models.CharField(max_length = 10, null=True, blank=True)
+	manager_id = models.CharField(max_length=50, null=True, blank=True)
 
 	def __str__(self):
 		return self.session_name
@@ -27,6 +28,5 @@ class ResultOmok(models.Model):
 
 	def __str__(self):
 		return self.color
-
 
 # Create your models here.

@@ -160,7 +160,7 @@ resultData()
 getAllData()
   {
     return this.http
-      .get("./home/sessions/"+this.c2.session+"/stones")
+      .get("./api/sessions/"+this.c2.session+"/stones")
   }
 }
 export class Result{

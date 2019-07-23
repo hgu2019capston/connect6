@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^manager/', views.managePage, name='managePage'),
     url(r'^room/(?P<room_name>[^/]+)/', views.room, name='room'),
     url(r'^game/(?P<session_key>[^/]+)/$', views.game, name='game'),
+    url(r'^watch/', views.watch, name='watch'),
+    url(r'^createSession/', views.createSession, name='createSession'),
+    url(r'^manageSession/(?P<room_name>[^/]+)/', views.manageSession, name='manageSession'),
 ]
 
 #urlpatterns = format_suffix_patterns(urlpatterns)

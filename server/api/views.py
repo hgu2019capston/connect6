@@ -107,7 +107,7 @@ def index(request):
             x = random.choice('ABCDEFGHIJKLMNOPQRS')
             y = random.randrange(1,20)
             data = {'room': s.id, 'color': "black" , 'x1': x, 'y1': y, 'x2': '', 'y2': 0}
-            requests.post('http://turnincode.cafe24.com:9999/api/sessions/'+str(s.id)+'/stones/', data=data)
+            requests.post('http://turnincode.cafe24.com:8880/api/sessions/'+str(s.id)+'/stones/', data=data)
 
     return render(request, 'index.html', {'session_key':s.id, "color":s.color})
 
